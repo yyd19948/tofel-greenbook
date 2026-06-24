@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>托福绿宝书 List 37 · 英译中测试</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Microsoft YaHei", sans-serif;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+    min-height: 100vh;
+    color: #1f2937;
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+  }
+  .container { width: 100%; max-width: 720px; }
+  header { text-align: center; margin-bottom: 24px; }
+  header h1 { font-size: 26px; font-weight: 700; color: #1e3a8a; margin-bottom: 6px; }
+  header .subtitle { color: #64748b; font-size: 14px; }
+  .stats {
+    display: flex; justify-content: space-between;
+    background: #fff; border-radius: 12px; padding: 14px 20px;
+    margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    font-size: 14px; color: #475569;
+  }
+  .stats .item { display: flex; gap: 6px; align-items: baseline; }
+  .stats .num { font-size: 20px; font-weight: 700; color: #1e3a8a; }
+  .stats .num.correct { color: #16a34a; }
+  .stats .num.wrong { color: #dc2626; }
+  .progress-bar { width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin-bottom: 20px; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #6366f1); width: 0%; transition: width 0.3s ease; }
+  .card { background: #fff; border-radius: 16px; padding: 32px 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 16px; }
+  .word-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 6px; }
+  .word { font-size: 38px; font-weight: 700; color: #0f172a; letter-spacing: 0.5px; }
+  .speak-btn {
+    width: 40px; height: 40px; border-radius: 50%; border: none;
+    background: #eef2ff; color: #4338ca; font-size: 20px; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: all 0.2s; padding: 0;
+  }
+  .speak-btn:hover { background: #c7d2fe; transform: scale(1.05); }
+  .speak-btn.speaking { background: #4338ca; color: #fff; }
+  .phonetic { text-align: center; color: #64748b; font-size: 16px; margin-bottom: 16px; font-style: italic; }
+  .options { display: flex; justify-content: center; gap: 18px; margin-bottom: 18px; font-size: 13px; color: #64748b; }
+  .options label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+  .options select { border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; font-size: 12px; background: #fff; color: #475569; cursor: pointer; }
+  .input-row { display: flex; gap: 8px; margin-bottom: 12px; }
+  input[type="text"] {
+    flex: 1; padding: 12px 16px; font-size: 16px;
+    border: 2px solid #e2e8f0; border-radius: 10px; outline: none;
+    transition: border-color 0.2s; font-family: inherit;
+  }
+  input[type="text"]:focus { border-color: #3b82f6; }
+  input[type="text"]:disabled { background: #f8fafc; color: #64748b; }
+  button { padding: 12px 20px; font-size: 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.2s; font-family: inherit; }
+  .btn-primary { background: #3b82f6; color: #fff; }
+  .btn-primary:hover { background: #2563eb; }
+  .btn-secondary { background: #e2e8f0; color: #475569; }
+  .btn-secondary:hover { background: #cbd5e1; }
+  .feedback { border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; font-size: 14px; display: none; }
+  .feedback.correct { background: #ecfdf5; color: #065f46; border-left: 4px solid #16a34a; }
+  .feedback.wrong { background: #fef2f2; color: #991b1b; border-left: 4px solid #dc2626; }
+  .feedback.skipped { background: #fffbeb; color: #92400e; border-left: 4px solid #f59e0b; }
+  .feedback .status { font-weight: 700; margin-bottom: 4px; }
+  .reference { background: #eef2ff; border-radius: 10px; padding: 14px 16px; border-left: 4px solid #6366f1; font-size: 15px; line-height: 1.7; display: none; color: #1e1b4b; }
+  .reference .label { font-weight: 700; color: #4338ca; display: block; margin-bottom: 4px; font-size: 13px; }
+  .reference #referenceText { font-weight: 500; }
+  .controls { display: flex; gap: 8px; justify-content: space-between; align-items: center; margin-top: 16px; }
+  .controls .left, .controls .right { display: flex; gap: 8px; }
+  .summary { background: #fff; border-radius: 16px; padding: 28px 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); text-align: center; display: none; }
+  .summary h2 { color: #1e3a8a; margin-bottom: 12px; }
+  .summary .score { font-size: 48px; font-weight: 700; margin: 14px 0; color: #16a34a; }
+  .summary .breakdown { color: #64748b; margin-bottom: 20px; }
+  .wrong-list { text-align: left; margin: 16px 0; max-height: 280px; overflow-y: auto; border-top: 1px solid #e2e8f0; padding-top: 16px; }
+  .wrong-item { padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+  .wrong-item .w { font-weight: 700; color: #0f172a; }
+  .wrong-item .m { color: #64748b; margin-left: 8px; }
+  .tip { text-align: center; color: #94a3b8; font-size: 12px; margin-top: 14px; }
+  kbd { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; padding: 1px 6px; font-size: 11px; font-family: ui-monospace, monospace; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <a href="index.html" style="display:inline-block; color:#64748b; text-decoration:none; font-size:13px; margin-bottom:10px;">← 返回首页</a>
+    <h1>托福绿宝书 · List 37</h1>
+    <div class="subtitle">英译中测试 · 输入中文意思后按回车判定</div>
+  </header>
+
+  <div class="stats">
+    <div class="item"><span>进度</span><span class="num" id="progress">0 / 0</span></div>
+    <div class="item"><span>正确</span><span class="num correct" id="correctCount">0</span></div>
+    <div class="item"><span>错误</span><span class="num wrong" id="wrongCount">0</span></div>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <div class="card" id="quizCard">
+    <div class="word-row">
+      <div class="word" id="wordText">-</div>
+      <button class="speak-btn" id="speakBtn" title="发音 (快捷键 S)" aria-label="发音">🔊</button>
+    </div>
+    <div class="phonetic" id="phonetic">-</div>
+
+    <div class="options">
+      <label><input type="checkbox" id="autoSpeak" checked /> 自动发音</label>
+      <label>口音
+        <select id="accentSelect">
+          <option value="en-US">美式</option>
+          <option value="en-GB">英式</option>
+        </select>
+      </label>
+      <label>语速
+        <select id="rateSelect">
+          <option value="0.7">慢</option>
+          <option value="0.9" selected>正常</option>
+          <option value="1.1">快</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="input-row">
+      <input type="text" id="answerInput" placeholder="请输入中文意思，回车判定" autocomplete="off" />
+      <button class="btn-primary" id="checkBtn">判定</button>
+    </div>
+
+    <div class="feedback" id="feedback">
+      <div class="status" id="feedbackStatus"></div>
+      <div id="feedbackText"></div>
+    </div>
+
+    <div class="reference" id="reference">
+      <span class="label">参考答案</span>
+      <span id="referenceText"></span>
+    </div>
+
+    <div class="controls">
+      <div class="left">
+        <button class="btn-secondary" id="skipBtn">跳过 / 不会</button>
+      </div>
+      <div class="right">
+        <button class="btn-secondary" id="nextBtn" style="display:none;">下一题 →</button>
+        <button class="btn-secondary" id="restartBtn">重新开始</button>
+      </div>
+    </div>
+
+    <div class="tip">
+      <kbd>Enter</kbd> 判定 / 下一题 &nbsp;·&nbsp; <kbd>Esc</kbd> 跳过 &nbsp;·&nbsp; <kbd>S</kbd> 发音
+    </div>
+  </div>
+
+  <div class="summary" id="summary">
+    <h2>测试完成 🎉</h2>
+    <div class="score" id="finalScore">0%</div>
+    <div class="breakdown" id="finalBreakdown"></div>
+    <div class="wrong-list" id="wrongListContainer"></div>
+    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <button class="btn-primary" id="restartBtn2">再来一轮</button>
+      <a href="index.html" class="btn-secondary" style="text-decoration:none; padding:12px 20px; border-radius:10px; font-weight:600; font-size:15px; display:inline-flex; align-items:center;">返回首页</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const WORDS = [
+  { w: "vanish", p: "[ˈvænɪʃ]", keys: ["消失","灭绝","不见","消散"], ref: "vi. 消失；灭绝" },
+  { w: "overwhelm", p: "[ˌoʊvərˈwelm]", keys: ["淹没","压倒","击败","制服","难以承受"], ref: "vt. 淹没，漫过；压倒，击败，制服；(感情上)使难以忍受；使应接不暇" },
+  { w: "sequoia", p: "[sɪˈkwɔɪə]", keys: ["美洲杉","红杉","巨杉"], ref: "n. 美洲杉，红杉" },
+  { w: "prairie", p: "[ˈpreri]", keys: ["大草原","草原","牧场"], ref: "n. 大草原" },
+  { w: "canal", p: "[kəˈnæl]", keys: ["运河","沟渠","水道","开运河"], ref: "n. 运河，沟渠 vt. 开运河" },
+  { w: "exact", p: "[ɪɡˈzækt]", keys: ["精确","准确","严格","精密","要求"], ref: "a. 精确的，准确的；严谨的，严格的；精密的 vt. 要求，索取；强迫，迫使" },
+  { w: "retail", p: "[ˈriːteɪl]", keys: ["零售","零售方式","销售"], ref: "n. 零售 v. 零售；以…价格销售 ad. 以零售方式" },
+  { w: "hypothesis", p: "[haɪˈpɒθəsɪs]", keys: ["假设","假说","前提","理论"], ref: "n. 假设，假说；前提" },
+  { w: "selection", p: "[sɪˈlekʃn]", keys: ["选择","挑选","精选","精选品"], ref: "n. 选择，挑选；精选；被挑选出来的人(或物)，精选品；可供选择的事物" },
+  { w: "tug", p: "[tʌɡ]", keys: ["拖","拉","牵引","猛拉","拖船"], ref: "v. (用力地)拖，拉 n. 牵引；猛拉；拖船" },
+  { w: "overdue", p: "[ˌəʊvəˈduː]", keys: ["逾期","过期","迟延","过度","过火"], ref: "a. 过期未付的，逾期的；过度的，过火的；迟到的，延误的" },
+  { w: "frustrate", p: "[frʌˈstreɪt]", keys: ["挫败","灰心","阻止","阻挠"], ref: "vt. 使感到灰心，挫败；阻止" },
+  { w: "outline", p: "[ˈaʊtlaɪn]", keys: ["轮廓","概要","大纲","描绘","略述"], ref: "n. 轮廓，概要，大纲 vt. 描绘，略述" },
+  { w: "species", p: "[ˈspiːʃiːz]", keys: ["种类","类群","物种","品种"], ref: "n. 种类，类群" },
+  { w: "negate", p: "[nɪˈɡeɪt]", keys: ["取消","否定","否认"], ref: "vt. 取消，否定" },
+  { w: "consequence", p: "[ˈkɒnsɪkwəns]", keys: ["结果","影响","重要性","后果","推理"], ref: "n. 结果，影响，推理，重要(性)，重大" },
+  { w: "overcome", p: "[ˌəʊvəˈkʌm]", keys: ["战胜","克服","打败","征服"], ref: "vt. 战胜，克服" },
+  { w: "adjacent", p: "[əˈdʒeɪsnt]", keys: ["邻近","毗连","相邻","毗邻"], ref: "a. 邻近的，毗连的" },
+  { w: "gradual", p: "[ˈɡrædʒuəl]", keys: ["逐渐","逐步","平缓","不陡"], ref: "a. 逐渐的，逐步的，坡度平缓的，不陡的" },
+  { w: "puppet", p: "[ˈpʌpɪt]", keys: ["木偶","玩偶","傀儡","受人操纵"], ref: "n. 木偶；玩偶；傀儡，受人操纵的人(或集团)" },
+  { w: "accounting", p: "[əˈkaʊntɪŋ]", keys: ["会计学","会计","账务"], ref: "n. 会计学；会计" },
+  { w: "roll", p: "[rəʊl]", keys: ["滚动","转动","卷","绕","名单"], ref: "v. (使)滚动，转动；卷，绕；(使)摇摆，(使)摇晃 n. (一)卷；卷形物；名单，花名册" },
+  { w: "irony", p: "[ˈaɪrəni]", keys: ["反话","讽刺","嘲弄","讽刺意味"], ref: "n. 反话，讽刺，嘲弄；具有讽刺意味的事" },
+  { w: "parasite", p: "[ˈpærəsaɪt]", keys: ["寄生物","寄生虫","食客"], ref: "n. 寄生物；食客" },
+  { w: "clumsy", p: "[ˈklʌmzi]", keys: ["笨拙","不得体","冒犯","难懂","难处理"], ref: "a. 笨拙的；不得体的，冒犯人的；复杂难懂的，难处理的" },
+  { w: "recession", p: "[rɪˈseʃn]", keys: ["衰退","萧条","撤回","退回"], ref: "n. (经济的)衰退，衰退时期，萧条时期；撤回，退回" },
+  { w: "inaccessible", p: "[ˌɪnəkˈsesəbl]", keys: ["不可及","难达到","不可得到","难接近"], ref: "a. 难达到的，不可及的；不能得到的" },
+  { w: "deduct", p: "[dɪˈdʌkt]", keys: ["扣除","减去","推论","演绎"], ref: "vt. 扣除，减去；推论，演绎" },
+  { w: "philosophy", p: "[fəˈlɒsəfi]", keys: ["哲学","思想体系","人生观","人生哲学"], ref: "n. 哲学；哲学体系，思想体系；人生观，人生哲学" },
+  { w: "reptile", p: "[ˈreptaɪl]", keys: ["爬行动物","爬虫","卑鄙"], ref: "n. 爬行动物，爬虫类；卑鄙的人" },
+  { w: "admit", p: "[ədˈmɪt]", keys: ["承认","准许","接纳","进入"], ref: "v. 承认；准许…进入，接纳" },
+  { w: "swamp", p: "[swɒmp]", keys: ["沼泽","湿地","淹没","应接不暇"], ref: "n. 沼泽地，湿地 vt. 使陷入，淹没；使应接不暇，使疲于应对" },
+  { w: "germinate", p: "[ˈdʒɜːmɪneɪt]", keys: ["发芽","萌芽","发展","萌发"], ref: "v. (使)发芽，萌芽；(使)发展" },
+  { w: "procedure", p: "[prəˈsiːdʒər]", keys: ["程序","手续","步骤","流程"], ref: "n. 程序，手续，步骤" },
+  { w: "encase", p: "[ɪnˈkeɪs]", keys: ["包住","包裹","嵌入"], ref: "vt. 包住" },
+  { w: "restoration", p: "[ˌrestəˈreɪʃn]", keys: ["恢复","修复","复原","归还","复位"], ref: "n. 恢复；整修，修复；复位，复原；归还" },
+  { w: "olfactory", p: "[ɒlˈfæktəri]", keys: ["嗅觉","气味","嗅感"], ref: "a. 嗅觉的" },
+  { w: "canvas", p: "[ˈkænvəs]", keys: ["画布","油画","帆布","帆布画"], ref: "n. 画布；油画；帆布" },
+  { w: "pique", p: "[piːk]", keys: ["激怒","激起","引起","恼怒","生气"], ref: "vt. 激怒；激起，引起 n. 恼怒，生气；怨恨" },
+  { w: "downside", p: "[ˈdaʊnsaɪd]", keys: ["缺点","负面","不利","下降"], ref: "n. 缺点，负面；底侧；下降趋势" },
+  { w: "locate", p: "[ləʊˈkeɪt]", keys: ["坐落于","找出","定位","位于"], ref: "vt. 使坐落于；找出，定位" },
+  { w: "anecdote", p: "[ˈænɪkdəʊt]", keys: ["秘闻","轶事","趣闻","小故事"], ref: "n. 秘闻；轶事，趣闻" },
+  { w: "turbulent", p: "[ˈtɜːbjələnt]", keys: ["动乱","狂暴","汹涌","湍急"], ref: "a. 动乱的；狂暴的，汹涌的" },
+  { w: "sophisticated", p: "[səˈfɪstɪkeɪtɪd]", keys: ["老练","精密","复杂","先进","高雅"], ref: "a. 老练的，见多识广的；精密的；复杂的，先进的；高雅的，有教养的" },
+  { w: "draw", p: "[drɔː]", keys: ["吸引","画","拖","拉","平局","抽签"], ref: "v. 吸引，招引；画，描绘；拖，拉；引起，激起；拨出，抽出；提取，支取；推断出；打成平局 n. 平局，和局；抽签" },
+  { w: "rejuvenate", p: "[rɪˈdʒuːvəneɪt]", keys: ["年轻","恢复活力","返老还童","复兴"], ref: "vt. 使年轻；使恢复活力" },
+  { w: "tentacle", p: "[ˈtentəkl]", keys: ["触角","触须","触手"], ref: "n. 触角，触须，触手" },
+  { w: "furious", p: "[ˈfjʊəriəs]", keys: ["狂怒","狂暴","强烈","猛烈"], ref: "a. 狂怒的，狂暴的；强烈的，猛烈的" },
+  { w: "annotation", p: "[ˌænəˈteɪʃn]", keys: ["注释","注解","批注"], ref: "n. 注释，注解" },
+  { w: "rage", p: "[reɪdʒ]", keys: ["狂怒","发怒","蔓延","风靡","时尚"], ref: "v. (暴风雨、火势、战斗等)猛烈地继续，激烈进行；发怒，怒斥；(流行病等)迅速蔓延，猖獗 n. 风靡一时的事物，时尚；狂怒" },
+  { w: "fiery", p: "[ˈfaɪəri]", keys: ["似火","易怒","暴躁","火热"], ref: "a. 似火的；易怒的，暴躁的" },
+  { w: "grouse", p: "[ɡraʊs]", keys: ["发牢骚","抱怨","松鸡","怨言"], ref: "v. 发牢骚，抱怨 n. 松鸡；怨言" },
+  { w: "afloat", p: "[əˈfləʊt]", keys: ["漂浮","偿债","维持","在水上"], ref: "a. 漂浮的；有偿债能力的，能维持下去的 ad. 漂浮地" },
+  { w: "scruple", p: "[ˈskruːpl]", keys: ["踌躇","顾忌","顾虑","犹豫"], ref: "n./vi. 踌躇，顾忌，顾虑" },
+  { w: "rob", p: "[rɒb]", keys: ["抢夺","抢掠","剥夺","抢劫"], ref: "vt. 抢夺，抢掠；剥夺，使失去" },
+  { w: "dissimulate", p: "[dɪˈsɪmjuleɪt]", keys: ["掩盖","掩饰","假装","隐瞒"], ref: "v. 掩盖，掩饰，假装" },
+  { w: "aboriginal", p: "[ˌæbəˈrɪdʒənl]", keys: ["原始","土著","土生土长"], ref: "a. (人、生物等)原始的；土著的，土生土长的 n. 土著" },
+  { w: "expedient", p: "[ɪkˈspiːdiənt]", keys: ["权宜之计","应急","可取","得当"], ref: "n. 权宜之计，应急办法，临时手段 a. (行动等)得当的，可取的" },
+  { w: "superstitious", p: "[ˌsuːpəˈstɪʃəs]", keys: ["迷信","迷信思想","受迷信支配"], ref: "a. 迷信的，受迷信思想支配的" },
+  { w: "elapse", p: "[ɪˈlæps]", keys: ["消逝","流逝","过去","逝去"], ref: "vi. (时间)消逝，流逝" },
+  { w: "auspicious", p: "[ɔːˈspɪʃəs]", keys: ["吉兆","吉利","幸运","好兆头"], ref: "a. 吉兆的，吉利的；幸运的" },
+  { w: "plow", p: "[plaʊ]", keys: ["犁","耕田","犁田","耕作"], ref: "n. 犁 v. 耕田，犁田，耕作" },
+  { w: "categorize", p: "[ˈkætəɡəraɪz]", keys: ["分类","归类","划分"], ref: "vt. 将…分类，把…加以分类" },
+  { w: "despondent", p: "[dɪˈspɒndənt]", keys: ["垂头丧气","沮丧","消沉","郁闷"], ref: "a. 垂头丧气的，沮丧的" },
+  { w: "espouse", p: "[ɪˈspaʊz]", keys: ["支持","拥护","赞成","倡导"], ref: "vt. 支持，拥护，赞成" },
+  { w: "conspicuous", p: "[kənˈspɪkjuəs]", keys: ["显眼","明显","瞩目","突出"], ref: "a. 显眼的，明显的" },
+  { w: "hind", p: "[haɪnd]", keys: ["后面","在后","后部"], ref: "a. 后面的，在后的" },
+  { w: "untapped", p: "[ˌʌnˈtæpt]", keys: ["未开发","未使用","未利用","潜力"], ref: "a. 未开发的，未使用的" },
+  { w: "ambush", p: "[ˈæmbʊʃ]", keys: ["埋伏","伏击","伏击战"], ref: "n./vt. 埋伏，伏击" },
+  { w: "exponent", p: "[ɪkˈspəʊnənt]", keys: ["倡导者","拥护者","指数","幂","解释者"], ref: "n. 解释者；倡导者，拥护者；指数，幂" },
+  { w: "confusion", p: "[kənˈfjuːʒn]", keys: ["困惑","混乱","混淆","不知所措"], ref: "n. 困惑；混乱，混淆" },
+  { w: "resist", p: "[rɪˈzɪst]", keys: ["抵抗","抗拒","耐","抗"], ref: "v. 抵抗；耐(热等)，抗(病等)" },
+  { w: "moth", p: "[mɒθ]", keys: ["蛾","飞蛾","蛾子"], ref: "n. 蛾" },
+  { w: "shame", p: "[ʃeɪm]", keys: ["羞耻","羞愧","耻辱","玷辱"], ref: "n. 羞耻，羞愧，耻辱；可耻的人(或事物) vt. 使羞愧；玷辱" },
+  { w: "biologist", p: "[baɪˈɒlədʒɪst]", keys: ["生物学家","生物学者","生物学专家"], ref: "n. 生物学家" },
+  { w: "disaster", p: "[dɪˈzɑːstə]", keys: ["灾难","灾祸","失败","浩劫"], ref: "n. 灾难；彻底的失败" },
+  { w: "incessant", p: "[ɪnˈsesnt]", keys: ["不断","不停","无休止","连续"], ref: "a. 不断的，不停的" },
+  { w: "skull", p: "[skʌl]", keys: ["颅骨","头骨","脑袋","头脑"], ref: "n. 颅骨，头骨；脑袋；头脑" },
+  { w: "infant", p: "[ˈɪnfənt]", keys: ["婴儿","幼儿","初期","婴孩"], ref: "n. 婴儿，幼儿 a. 婴儿的；初期的" },
+  { w: "commune", p: "[kəˈmjuːn]", keys: ["亲密交谈","群体","公社","交流"], ref: "vi. 与…亲密地交谈 n. 群体，公社" },
+  { w: "recline", p: "[rɪˈklaɪn]", keys: ["倚靠","斜倚","向后靠","躺"], ref: "v. 向后倚靠，斜倚" },
+  { w: "available", p: "[əˈveɪləbl]", keys: ["可得到","可获得","有空","可找到"], ref: "a. 可得到的，可找到的；有空的" },
+  { w: "environmental", p: "[ɪnˌvaɪrənˈmentl]", keys: ["环境","生态环境","自然环境","有关环境"], ref: "a. 有关环境的，自然环境的，生态环境的；环境的" },
+  { w: "tableland", p: "[ˈteɪblænd]", keys: ["高原","台地","高地"], ref: "n. 高原，台地" },
+  { w: "erect", p: "[ɪˈrekt]", keys: ["直立","建立","竖立","竖起的"], ref: "a. 直立的 vt. 建立；竖立" },
+  { w: "illuminate", p: "[ɪˈluːmɪneɪt]", keys: ["照亮","启发","启迪","阐明","说明"], ref: "vt. 照亮；启发，启迪；阐明，说明" },
+  { w: "spheroid", p: "[ˈsfɪərɔɪd]", keys: ["球状体","椭球体","球形"], ref: "n. 球状体，椭球体" },
+  { w: "fatigue", p: "[fəˈtiːɡ]", keys: ["劳累","疲劳","疲倦","金属疲劳"], ref: "n. 劳累；(金属材料等的)疲劳" },
+  { w: "climate", p: "[ˈklaɪmət]", keys: ["气候","风气","氛围","思潮","地带"], ref: "n. 气候；气候区，地带；风气，氛围；思潮" },
+  { w: "novice", p: "[ˈnɒvɪs]", keys: ["生手","新手","初学","新信徒"], ref: "n. 生手，新手；新信徒" },
+  { w: "recall", p: "[rɪˈkɔːl]", keys: ["回忆","回想","召回","撤销","记性"], ref: "v. 回忆，回想起；召回，叫回；收回，撤销 n. 记忆力，记性；召回" }
+];
+
+const state = { order: [], idx: 0, correct: 0, wrong: 0, answered: false, wrongList: [] };
+const $ = (id) => document.getElementById(id);
+
+const TTS = {
+  voices: [], ready: false,
+  load() {
+    if (!("speechSynthesis" in window)) return;
+    const update = () => { this.voices = window.speechSynthesis.getVoices(); this.ready = this.voices.length > 0; };
+    update();
+    window.speechSynthesis.onvoiceschanged = update;
+  },
+  pickVoice(lang) {
+    if (!this.voices.length) this.voices = window.speechSynthesis.getVoices();
+    const exact = this.voices.find(v => v.lang === lang);
+    if (exact) return exact;
+    const prefix = lang.split("-")[0];
+    return this.voices.find(v => v.lang.startsWith(prefix)) || null;
+  },
+  speak(text) {
+    if (!("speechSynthesis" in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      const lang = ($("accentSelect") && $("accentSelect").value) || "en-US";
+      const rate = parseFloat(($("rateSelect") && $("rateSelect").value) || "0.9");
+      utter.lang = lang;
+      utter.rate = rate;
+      utter.pitch = 1;
+      const voice = this.pickVoice(lang);
+      if (voice) utter.voice = voice;
+      const btn = $("speakBtn");
+      utter.onstart = () => btn && btn.classList.add("speaking");
+      utter.onend = () => btn && btn.classList.remove("speaking");
+      utter.onerror = () => btn && btn.classList.remove("speaking");
+      window.speechSynthesis.speak(utter);
+    } catch (e) { console.warn("TTS error:", e); }
+  }
+};
+TTS.load();
+
+function speakCurrent() {
+  if (state.idx >= state.order.length) return;
+  TTS.speak(WORDS[state.order[state.idx]].w);
+}
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function normalize(s) {
+  return (s || "").trim().toLowerCase().replace(/[\s,，。；;、./\\()（）\[\]【】"'`~!@#$%^&*+=?？!！]/g, "");
+}
+
+function isMatch(userInput, keys) {
+  const u = normalize(userInput);
+  if (!u) return false;
+  for (const k of keys) {
+    const nk = normalize(k);
+    if (!nk) continue;
+    if (u.includes(nk) || nk.includes(u)) return true;
+  }
+  return false;
+}
+
+function render() {
+  if (state.idx >= state.order.length) return showSummary();
+  const item = WORDS[state.order[state.idx]];
+  $("wordText").textContent = item.w;
+  $("phonetic").textContent = item.p || "";
+  $("answerInput").value = "";
+  $("answerInput").disabled = false;
+  $("answerInput").focus();
+  $("feedback").style.display = "none";
+  $("reference").style.display = "none";
+  $("nextBtn").style.display = "none";
+  $("checkBtn").style.display = "";
+  $("skipBtn").style.display = "";
+  $("progress").textContent = `${state.idx + 1} / ${state.order.length}`;
+  $("correctCount").textContent = state.correct;
+  $("wrongCount").textContent = state.wrong;
+  $("progressFill").style.width = `${(state.idx / state.order.length) * 100}%`;
+  state.answered = false;
+  if ($("autoSpeak") && $("autoSpeak").checked) setTimeout(speakCurrent, 120);
+}
+
+function check() {
+  if (state.answered) return next();
+  const item = WORDS[state.order[state.idx]];
+  const input = $("answerInput").value;
+  if (input.trim() === "") return skip();
+  const ok = isMatch(input, item.keys);
+  state.answered = true;
+  $("answerInput").disabled = true;
+  if (ok) {
+    state.correct++;
+    $("feedback").className = "feedback correct";
+    $("feedbackStatus").textContent = "✓ 回答正确";
+    $("feedbackText").innerHTML = `你的回答：<b>${escapeHtml(input)}</b>`;
+  } else {
+    state.wrong++;
+    state.wrongList.push({ ...item, userAnswer: input });
+    $("feedback").className = "feedback wrong";
+    $("feedbackStatus").textContent = "✗ 回答错误";
+    $("feedbackText").innerHTML = `你的回答：<b>${escapeHtml(input)}</b>`;
+  }
+  $("feedback").style.display = "block";
+  $("reference").style.display = "block";
+  $("referenceText").textContent = item.ref;
+  $("checkBtn").style.display = "none";
+  $("skipBtn").style.display = "none";
+  $("nextBtn").style.display = "";
+  $("correctCount").textContent = state.correct;
+  $("wrongCount").textContent = state.wrong;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function skip() {
+  if (state.answered) return next();
+  const item = WORDS[state.order[state.idx]];
+  state.wrong++;
+  state.wrongList.push({ ...item, userAnswer: "(跳过)" });
+  state.answered = true;
+  $("answerInput").disabled = true;
+  $("feedback").className = "feedback skipped";
+  $("feedbackStatus").textContent = "⊝ 已跳过";
+  $("feedbackText").textContent = "请看下方参考答案。";
+  $("feedback").style.display = "block";
+  $("reference").style.display = "block";
+  $("referenceText").textContent = item.ref;
+  $("checkBtn").style.display = "none";
+  $("skipBtn").style.display = "none";
+  $("nextBtn").style.display = "";
+  $("wrongCount").textContent = state.wrong;
+}
+
+function next() { state.idx++; render(); }
+
+const LIST_NUMBER = 37;
+
+function saveProgress(score) {
+  try {
+    const all = JSON.parse(localStorage.getItem("toefl-progress") || "{}");
+    const prev = all[LIST_NUMBER] || {};
+    const best = Math.max(prev.score || 0, score);
+    all[LIST_NUMBER] = { score: best, lastScore: score, lastAt: Date.now(), attempts: (prev.attempts || 0) + 1 };
+    localStorage.setItem("toefl-progress", JSON.stringify(all));
+  } catch (e) { console.warn("save progress failed:", e); }
+}
+
+function showSummary() {
+  $("quizCard").style.display = "none";
+  $("summary").style.display = "block";
+  const total = state.order.length;
+  const pct = total === 0 ? 0 : Math.round((state.correct / total) * 100);
+  $("finalScore").textContent = pct + "%";
+  $("finalScore").style.color = pct >= 80 ? "#16a34a" : pct >= 60 ? "#f59e0b" : "#dc2626";
+  $("finalBreakdown").textContent = `共 ${total} 题 · 正确 ${state.correct} · 错误/跳过 ${state.wrong}`;
+  $("progressFill").style.width = "100%";
+  saveProgress(pct);
+  const wl = $("wrongListContainer");
+  if (state.wrongList.length === 0) {
+    wl.innerHTML = "<div style='color:#16a34a; padding:12px;'>全部答对，太棒了！</div>";
+  } else {
+    wl.innerHTML = "<div style='font-weight:700; color:#dc2626; margin-bottom:8px;'>需要复习的单词：</div>" +
+      state.wrongList.map(it => `
+        <div class="wrong-item">
+          <span class="w">${it.w}</span>
+          <span class="m">${it.ref}</span>
+          <div style="color:#94a3b8; font-size:12px; margin-top:2px;">你的回答：${it.userAnswer}</div>
+        </div>
+      `).join("");
+  }
+}
+
+function start() {
+  state.order = shuffle(WORDS.map((_, i) => i));
+  state.idx = 0;
+  state.correct = 0;
+  state.wrong = 0;
+  state.wrongList = [];
+  $("summary").style.display = "none";
+  $("quizCard").style.display = "block";
+  render();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  $("checkBtn").addEventListener("click", check);
+  $("skipBtn").addEventListener("click", skip);
+  $("nextBtn").addEventListener("click", next);
+  $("restartBtn").addEventListener("click", start);
+  $("restartBtn2").addEventListener("click", start);
+  $("speakBtn").addEventListener("click", speakCurrent);
+
+  let lastEnterAt = 0;
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const now = Date.now();
+      if (now - lastEnterAt < 250) return;
+      lastEnterAt = now;
+      e.preventDefault();
+      if (state.answered) { next(); } else { check(); }
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      if (!state.answered) skip();
+    } else if ((e.key === "s" || e.key === "S") && document.activeElement !== $("answerInput")) {
+      e.preventDefault();
+      speakCurrent();
+    }
+  });
+
+  start();
+});
+</script>
+</body>
+</html>
