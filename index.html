@@ -238,7 +238,7 @@
   <div class="section-title">
     <h2>Word List 列表</h2>
     <div>
-      <span class="info" id="readyInfo">共 50 个 List</span>
+      <span class="info" id="readyInfo">共 48 个 List</span>
       <button class="clear-btn" id="clearBtn" title="清除本地保存的所有学习进度">清除进度</button>
     </div>
   </div>
@@ -258,10 +258,19 @@
 <script>
 const LISTS = [
   { n: 1, file: "list1_test.html", words: 90, ready: true },
+  { n: 2, file: "list2_test.html", words: 89, ready: true },
+  { n: 3, file: "list3_test.html", words: 91, ready: true },
+  { n: 4, file: "list4_test.html", words: 93, ready: true },
+  { n: 5, file: "list5_test.html", words: 84, ready: true },
+  { n: 6, file: "list6_test.html", words: 81, ready: true },
+  { n: 7, file: "list7_test.html", words: 87, ready: true },
+  { n: 8, file: "list8_test.html", words: 98, ready: true },
+  { n: 9, file: "list9_test.html", words: 85, ready: true },
+  { n: 10, file: "list10_test.html", words: 88, ready: true },
   { n: 18, file: "list18_test.html", words: 95, ready: true }
 ];
 
-const TOTAL_LISTS = 50;
+const TOTAL_LISTS = 48;
 
 function loadProgress() {
   try {
