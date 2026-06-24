@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>托福绿宝书 List 13 · 英译中测试</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Microsoft YaHei", sans-serif;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+    min-height: 100vh;
+    color: #1f2937;
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+  }
+  .container { width: 100%; max-width: 720px; }
+  header { text-align: center; margin-bottom: 24px; }
+  header h1 { font-size: 26px; font-weight: 700; color: #1e3a8a; margin-bottom: 6px; }
+  header .subtitle { color: #64748b; font-size: 14px; }
+  .stats {
+    display: flex; justify-content: space-between;
+    background: #fff; border-radius: 12px; padding: 14px 20px;
+    margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    font-size: 14px; color: #475569;
+  }
+  .stats .item { display: flex; gap: 6px; align-items: baseline; }
+  .stats .num { font-size: 20px; font-weight: 700; color: #1e3a8a; }
+  .stats .num.correct { color: #16a34a; }
+  .stats .num.wrong { color: #dc2626; }
+  .progress-bar { width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin-bottom: 20px; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #6366f1); width: 0%; transition: width 0.3s ease; }
+  .card { background: #fff; border-radius: 16px; padding: 32px 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 16px; }
+  .word-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 6px; }
+  .word { font-size: 38px; font-weight: 700; color: #0f172a; letter-spacing: 0.5px; }
+  .speak-btn {
+    width: 40px; height: 40px; border-radius: 50%; border: none;
+    background: #eef2ff; color: #4338ca; font-size: 20px; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: all 0.2s; padding: 0;
+  }
+  .speak-btn:hover { background: #c7d2fe; transform: scale(1.05); }
+  .speak-btn.speaking { background: #4338ca; color: #fff; }
+  .phonetic { text-align: center; color: #64748b; font-size: 16px; margin-bottom: 16px; font-style: italic; }
+  .options { display: flex; justify-content: center; gap: 18px; margin-bottom: 18px; font-size: 13px; color: #64748b; }
+  .options label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+  .options select { border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; font-size: 12px; background: #fff; color: #475569; cursor: pointer; }
+  .input-row { display: flex; gap: 8px; margin-bottom: 12px; }
+  input[type="text"] {
+    flex: 1; padding: 12px 16px; font-size: 16px;
+    border: 2px solid #e2e8f0; border-radius: 10px; outline: none;
+    transition: border-color 0.2s; font-family: inherit;
+  }
+  input[type="text"]:focus { border-color: #3b82f6; }
+  input[type="text"]:disabled { background: #f8fafc; color: #64748b; }
+  button { padding: 12px 20px; font-size: 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.2s; font-family: inherit; }
+  .btn-primary { background: #3b82f6; color: #fff; }
+  .btn-primary:hover { background: #2563eb; }
+  .btn-secondary { background: #e2e8f0; color: #475569; }
+  .btn-secondary:hover { background: #cbd5e1; }
+  .feedback { border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; font-size: 14px; display: none; }
+  .feedback.correct { background: #ecfdf5; color: #065f46; border-left: 4px solid #16a34a; }
+  .feedback.wrong { background: #fef2f2; color: #991b1b; border-left: 4px solid #dc2626; }
+  .feedback.skipped { background: #fffbeb; color: #92400e; border-left: 4px solid #f59e0b; }
+  .feedback .status { font-weight: 700; margin-bottom: 4px; }
+  .reference { background: #eef2ff; border-radius: 10px; padding: 14px 16px; border-left: 4px solid #6366f1; font-size: 15px; line-height: 1.7; display: none; color: #1e1b4b; }
+  .reference .label { font-weight: 700; color: #4338ca; display: block; margin-bottom: 4px; font-size: 13px; }
+  .reference #referenceText { font-weight: 500; }
+  .controls { display: flex; gap: 8px; justify-content: space-between; align-items: center; margin-top: 16px; }
+  .controls .left, .controls .right { display: flex; gap: 8px; }
+  .summary { background: #fff; border-radius: 16px; padding: 28px 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); text-align: center; display: none; }
+  .summary h2 { color: #1e3a8a; margin-bottom: 12px; }
+  .summary .score { font-size: 48px; font-weight: 700; margin: 14px 0; color: #16a34a; }
+  .summary .breakdown { color: #64748b; margin-bottom: 20px; }
+  .wrong-list { text-align: left; margin: 16px 0; max-height: 280px; overflow-y: auto; border-top: 1px solid #e2e8f0; padding-top: 16px; }
+  .wrong-item { padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+  .wrong-item .w { font-weight: 700; color: #0f172a; }
+  .wrong-item .m { color: #64748b; margin-left: 8px; }
+  .tip { text-align: center; color: #94a3b8; font-size: 12px; margin-top: 14px; }
+  kbd { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; padding: 1px 6px; font-size: 11px; font-family: ui-monospace, monospace; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <a href="index.html" style="display:inline-block; color:#64748b; text-decoration:none; font-size:13px; margin-bottom:10px;">← 返回首页</a>
+    <h1>托福绿宝书 · List 13</h1>
+    <div class="subtitle">英译中测试 · 输入中文意思后按回车判定</div>
+  </header>
+
+  <div class="stats">
+    <div class="item"><span>进度</span><span class="num" id="progress">0 / 0</span></div>
+    <div class="item"><span>正确</span><span class="num correct" id="correctCount">0</span></div>
+    <div class="item"><span>错误</span><span class="num wrong" id="wrongCount">0</span></div>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <div class="card" id="quizCard">
+    <div class="word-row">
+      <div class="word" id="wordText">-</div>
+      <button class="speak-btn" id="speakBtn" title="发音 (快捷键 S)" aria-label="发音">🔊</button>
+    </div>
+    <div class="phonetic" id="phonetic">-</div>
+
+    <div class="options">
+      <label><input type="checkbox" id="autoSpeak" checked /> 自动发音</label>
+      <label>口音
+        <select id="accentSelect">
+          <option value="en-US">美式</option>
+          <option value="en-GB">英式</option>
+        </select>
+      </label>
+      <label>语速
+        <select id="rateSelect">
+          <option value="0.7">慢</option>
+          <option value="0.9" selected>正常</option>
+          <option value="1.1">快</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="input-row">
+      <input type="text" id="answerInput" placeholder="请输入中文意思，回车判定" autocomplete="off" />
+      <button class="btn-primary" id="checkBtn">判定</button>
+    </div>
+
+    <div class="feedback" id="feedback">
+      <div class="status" id="feedbackStatus"></div>
+      <div id="feedbackText"></div>
+    </div>
+
+    <div class="reference" id="reference">
+      <span class="label">参考答案</span>
+      <span id="referenceText"></span>
+    </div>
+
+    <div class="controls">
+      <div class="left">
+        <button class="btn-secondary" id="skipBtn">跳过 / 不会</button>
+      </div>
+      <div class="right">
+        <button class="btn-secondary" id="nextBtn" style="display:none;">下一题 →</button>
+        <button class="btn-secondary" id="restartBtn">重新开始</button>
+      </div>
+    </div>
+
+    <div class="tip">
+      <kbd>Enter</kbd> 判定 / 下一题 &nbsp;·&nbsp; <kbd>Esc</kbd> 跳过 &nbsp;·&nbsp; <kbd>S</kbd> 发音
+    </div>
+  </div>
+
+  <div class="summary" id="summary">
+    <h2>测试完成 🎉</h2>
+    <div class="score" id="finalScore">0%</div>
+    <div class="breakdown" id="finalBreakdown"></div>
+    <div class="wrong-list" id="wrongListContainer"></div>
+    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <button class="btn-primary" id="restartBtn2">再来一轮</button>
+      <a href="index.html" class="btn-secondary" style="text-decoration:none; padding:12px 20px; border-radius:10px; font-weight:600; font-size:15px; display:inline-flex; align-items:center;">返回首页</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const WORDS = [
+  { w: "systematic", p: "[ˌsɪstəˈmætɪk]", keys: ["系统的","体系的","系统化"], ref: "a. 系统的，体系的" },
+  { w: "client", p: "[ˈklaɪənt]", keys: ["委托人","当事人","顾客","客户"], ref: "n. 委托人，当事人；顾客" },
+  { w: "dye", p: "[daɪ]", keys: ["颜料","染料","染色"], ref: "n. 颜料，染料 v. 染色" },
+  { w: "turtle", p: "[ˈtɜːrtl]", keys: ["龟","海龟"], ref: "n. 龟，海龟" },
+  { w: "finance", p: "[ˈfaɪnæns]", keys: ["财政","金融","提供资金","融资"], ref: "vt. 给…提供资金 n. 财政，金融；[常 pl.]财务情况" },
+  { w: "supervise", p: "[ˈsuːpərvaɪz]", keys: ["监督","指导","监管"], ref: "vt. 监督；指导" },
+  { w: "tariff", p: "[ˈtærɪf]", keys: ["关税","价目表","收费表"], ref: "n. 关税；(旅馆、饭店等的)价目表，收费表" },
+  { w: "copious", p: "[ˈkoʊpiəs]", keys: ["丰富的","富饶的","大量"], ref: "a. 丰富的，富饶的" },
+  { w: "exposure", p: "[ɪkˈspoʊʒər]", keys: ["暴露","显露","揭露","曝光","面临"], ref: "n. 暴露，显露；揭露；曝光；面临，遭受(危险或不快)" },
+  { w: "substance", p: "[ˈsʌbstəns]", keys: ["物质","主旨","实质","根据","重要性"], ref: "n. 物质；主旨，实质；根据；重要性" },
+  { w: "neoclassical", p: "[ˌniːoʊˈklæsɪkl]", keys: ["新古典","新古典主义"], ref: "a. 新古典主义的" },
+  { w: "array", p: "[əˈreɪ]", keys: ["一系列","阵列","布置","排列","部署"], ref: "n. 一系列；阵列 vt. 布置，排列；部署" },
+  { w: "counselor", p: "[ˈkaʊnsələr]", keys: ["顾问","律师","辅导员"], ref: "n. (尤指针对私人问题的)顾问；律师" },
+  { w: "sanction", p: "[ˈsæŋkʃn]", keys: ["同意","许可","制裁","惩罚","约束"], ref: "vt. 同意，许可；惩罚，实施制裁 n. 同意，许可；约束；制裁" },
+  { w: "enhance", p: "[ɪn'hæns]", keys: ["提高","增强","改善"], ref: "vt. 提高；增强" },
+  { w: "overact", p: "[ˌouvər'ækt]", keys: ["表演过火","做作","过火"], ref: "v. 把(角色)表演得过火；表现做作" },
+  { w: "append", p: "[ə'pend]", keys: ["附加","增补","追加"], ref: "vt. 附加，增补" },
+  { w: "chilly", p: "['tʃɪli]", keys: ["寒冷","冷淡","不友好"], ref: "a. 寒冷的；冷淡的，不友好的" },
+  { w: "retrospect", p: "['retrəspekt]", keys: ["回顾","反顾","回溯"], ref: "n. 回顾，反顾" },
+  { w: "havoc", p: "['hævək]", keys: ["混乱","大破坏","蹂躏"], ref: "n. 混乱，大破坏" },
+  { w: "apprehend", p: "[ˌæprɪ'hend]", keys: ["逮捕","领会","理解","拘捕"], ref: "vt. 逮捕；领会，理解" },
+  { w: "sacrifice", p: "['sækrɪfaɪs]", keys: ["牺牲","献出","献祭","祭品"], ref: "v. 牺牲，献出；以…做祭献 n. 牺牲，献身；献祭，祭品" },
+  { w: "evacuate", p: "[ɪˈvækjueɪt]", keys: ["疏散","撤离","排空"], ref: "v. 疏散，撤离；排空" },
+  { w: "bilingualism", p: "[ˌbaɪˈlɪŋɡwəlɪzəm]", keys: ["双语","双语现象"], ref: "n. 双语现象" },
+  { w: "tentative", p: "[ˈtentətɪv]", keys: ["试验性","暂定","不确定","犹豫"], ref: "a. 试验性的；不确定的，暂定的；犹豫的" },
+  { w: "zest", p: "[zest]", keys: ["趣味","热情","狂热"], ref: "n. 趣味；热情，狂热" },
+  { w: "agonize", p: "[ˈæɡənaɪz]", keys: ["苦思","思索","焦虑"], ref: "vi. 苦苦思索；焦虑不已" },
+  { w: "etiquette", p: "[ˈetɪket]", keys: ["礼节","礼仪","规矩"], ref: "n. 礼节，礼仪" },
+  { w: "disinterest", p: "[dɪsˈɪntrəst]", keys: ["无兴趣","冷漠","客观","公正"], ref: "n. 无兴趣，冷漠；客观，公正" },
+  { w: "stipulate", p: "[ˈstɪpjuleɪt]", keys: ["规定","明确要求","约定"], ref: "v. 规定，明确要求；(以…为条件)约定" },
+  { w: "oratorio", p: "[ˌɔːrəˈtɔːrioʊ]", keys: ["清唱剧","宗教剧"], ref: "n. 清唱剧，宗教剧" },
+  { w: "adamant", p: "['ædəmənt]", keys: ["坚定不移","坚决","固执"], ref: "a. 坚定不移的，坚决的；固执的" },
+  { w: "discredit", p: "[dɪsˈkredɪt]", keys: ["败坏名誉","使怀疑","名誉丧失"], ref: "vt. 使丧失声誉；使怀疑 n. 名誉丧失" },
+  { w: "morgue", p: "[mɔːrg]", keys: ["停尸房","太平间","验尸所"], ref: "n. 停尸房，太平间" },
+  { w: "democracy", p: "[dɪˈmɑːkrəsi]", keys: ["民主","民主政体","民主制度","民主国家"], ref: "n. 民主政体，民主制度；民主国家；民主精神" },
+  { w: "coral", p: "['kɔːrəl]", keys: ["珊瑚","珊瑚色","红色"], ref: "n. 珊瑚(虫) a. 珊瑚色的，红色的" },
+  { w: "pheromone", p: "['ferəmoʊn]", keys: ["信息素"], ref: "n. 信息素" },
+  { w: "ornament", p: "[ˈɔːrnəmənt]", keys: ["装饰","装饰品","点缀"], ref: "n. 装饰(品) vt. 装饰，点缀" },
+  { w: "deport", p: "[dɪˈpɔːrt]", keys: ["驱逐出境","驱逐","遣送"], ref: "vt. 驱逐出境" },
+  { w: "outgas", p: "[ˌaʊtˈɡæs]", keys: ["除气","脱气","排气"], ref: "vt. 除去(固体中的)气" },
+  { w: "chaste", p: "[tʃeɪst]", keys: ["贞洁","简朴","朴实"], ref: "a. 贞洁的；简朴的，朴实的" },
+  { w: "tract", p: "[trækt]", keys: ["地域","领域","传单","小册子","大片土地"], ref: "n. 地域；领域；传单，小册子；大片(土地或森林)" },
+  { w: "cipher", p: "[ˈsaɪfər]", keys: ["密码","暗号"], ref: "n. 密码，暗号" },
+  { w: "soloist", p: "[ˈsoʊloʊɪst]", keys: ["独奏者","独唱者","表演者"], ref: "n. 独奏者，独唱者，单独表演者" },
+  { w: "purity", p: "[ˈpjʊrəti]", keys: ["纯度","纯洁","纯净","纯粹"], ref: "n. 纯度；纯洁，纯净，纯粹" },
+  { w: "notwithstanding", p: "[ˌnɑːtwɪθˈstændɪŋ]", keys: ["虽然","尽管","尽管如此"], ref: "ad./prep. 虽然，尽管如此" },
+  { w: "seem", p: "[siːm]", keys: ["好像","似乎","看来"], ref: "v. 好像，似乎" },
+  { w: "protagonist", p: "[prəˈtæɡənɪst]", keys: ["主角","主人公","领导者","倡导者"], ref: "n. (戏剧、故事、小说中的)主角，主人公；领导者，倡导者" },
+  { w: "recruit", p: "[rɪˈkruːt]", keys: ["招募","征募","新兵","新成员"], ref: "v. 招募(新兵)，征募 n. 新兵；新成员" },
+  { w: "supplant", p: "[səˈplænt]", keys: ["取代","代替","顶替"], ref: "vt. 取代，代替" },
+  { w: "prolonged", p: "[prə'lɔ:ŋd]", keys: ["长期","持久","延长"], ref: "a. 长期的，持久的" },
+  { w: "bet", p: "[bet]", keys: ["打赌","赌注","敢说","确信"], ref: "n. 打赌；赌注 v. 打赌；敢说，确信" },
+  { w: "physical", p: "['fɪzɪkl]", keys: ["物理","物质","有形","身体","体检"], ref: "a. 物理(学)的；物质的，有形的；身体的，肉体的 n. 体检" },
+  { w: "incursion", p: "[ɪn'kɜ:rʒn]", keys: ["袭击","入侵","突然入侵","介入"], ref: "n. 袭击，突然入侵；介入" },
+  { w: "metric", p: "['metrɪk]", keys: ["米制","公制"], ref: "a. 米制的；公制的" },
+  { w: "transplant", p: "[træns'plænt]", keys: ["移植","迁移","移居","移种"], ref: "vt. 移植(器官等)；使迁移，使移居；移栽，移种(植物等) n. (器官等的)移植" },
+  { w: "fresco", p: "[ˈfreskoʊ]", keys: ["湿壁画","壁画技法"], ref: "n. 湿壁画；湿壁画技法 v. 绘湿壁画于" },
+  { w: "mission", p: "[ˈmɪʃn]", keys: ["代表团","使团","任务","使命"], ref: "n. 代表团，使团；任务，使命" },
+  { w: "expansion", p: "[ɪkˈspænʃn]", keys: ["扩张","膨胀","扩大"], ref: "n. 扩张；膨胀" },
+  { w: "spray", p: "[spreɪ]", keys: ["浪花","飞沫","喷雾","喷射","溅散"], ref: "n. 浪花；飞沫；喷雾 v. 喷射；(使)溅散" },
+  { w: "tectonics", p: "[tekˈtɑːnɪks]", keys: ["构造地质","构造学","地质学"], ref: "n. 构造地质学" },
+  { w: "assign", p: "[əˈsaɪn]", keys: ["指派","指定","分配","布置"], ref: "vt. 指派；指定(时间、地点等)；分配；布置(作业)" },
+  { w: "swell", p: "[swel]", keys: ["增加","扩大","膨胀","肿胀","涌动"], ref: "v. (使)增加，扩大；膨胀，肿胀 n. 波浪的涌动；隆起(处)；增强，增加" },
+  { w: "outlying", p: "[ˈautlaɪɪŋ]", keys: ["边远","偏僻","无关","题外"], ref: "a. 边远的，偏僻的；无关的，题外的" },
+  { w: "blink", p: "[blɪŋk]", keys: ["眨眼","闪亮","闪烁"], ref: "v. 眨眼睛；闪亮，闪烁 n. 眨眼睛" },
+  { w: "dialect", p: "[ˈdaɪəlekt]", keys: ["方言","土语","地方语"], ref: "n. 方言，土语" },
+  { w: "shortly", p: "[ˈʃɔːrtli]", keys: ["不久","简要","不耐烦"], ref: "ad. 不久；简要地；不耐烦地" },
+  { w: "applaud", p: "[əˈplɔːd]", keys: ["鼓掌","喝彩","称赞"], ref: "v. 鼓掌，喝彩；称赞" },
+  { w: "larva", p: "[ˈlɑːrvə]", keys: ["幼虫","幼体"], ref: "n. [pl. larvae]幼虫，幼体" },
+  { w: "monastery", p: "[ˈmɑːnəsteri]", keys: ["男修道院","寺院","修道院"], ref: "n. 男修道院，寺院" },
+  { w: "bluff", p: "[blʌf]", keys: ["悬崖","峭壁","虚张声势","吓唬","直率"], ref: "n. 悬崖，峭壁；虚张声势，唬人 v. 虚张声势，吓唬 a. 直率的，坦率的" },
+  { w: "facet", p: "[ˈfæsɪt]", keys: ["小平面","方面","侧面"], ref: "n. (宝石的)小平面；(问题等的)方面" },
+  { w: "primal", p: "[ˈpraɪml]", keys: ["最初","主要","首要"], ref: "a. 最初的；主要的，首要的" },
+  { w: "accomplishment", p: "[ə'kʌmplɪʃmənt]", keys: ["成就","完成","才艺","技巧"], ref: "n. 成就；完成；才艺，技巧" },
+  { w: "longevity", p: "[lɔːn'dʒevəti]", keys: ["长寿","寿命"], ref: "n. 长寿；寿命" },
+  { w: "revolt", p: "[rɪ'vəʊlt]", keys: ["反叛","反抗","违抗","厌恶","起义"], ref: "v. 反叛，反抗；违抗；(使)厌恶，(使)反感 n. 起义，叛乱，反抗" },
+  { w: "subsistence", p: "[səb'sɪstəns]", keys: ["生存","生计"], ref: "n. 生存，生计" },
+  { w: "ceremonial", p: "[ˌserɪ'məʊniəl]", keys: ["礼仪","礼节","仪式"], ref: "a. 礼仪的，礼节的 n. 礼仪，礼节" },
+  { w: "seasoning", p: "['siːzənɪŋ]", keys: ["调味品","调料","佐料"], ref: "n. 调味品，调料" },
+  { w: "abreast", p: "[ə'brest]", keys: ["并列","并排"], ref: "ad. 并列地，并排地" },
+  { w: "pioneer", p: "[ˌpaɪəˈnɪr]", keys: ["开拓","开创","开拓者","创始人"], ref: "vt. 开拓，开创 n. 开拓者，创始人" },
+  { w: "division", p: "[dɪˈvɪʒn]", keys: ["除法","分开","分隔","分配","部分","分歧","部门"], ref: "n. 除，除法；分开，分隔；分配；(分出来的)部分；分歧，分裂；部门" },
+  { w: "horn", p: "[hɔːrn]", keys: ["角","号角","喇叭"], ref: "n. (牛、羊、鹿等的)角；号角，喇叭" },
+  { w: "fix", p: "[fɪks]", keys: ["修理","固定","安装","安排","确定","困境"], ref: "v. 修理；使固定，安装；安排；找到，确定 n. 解决方法；困境，窘境" },
+  { w: "ecological", p: "[ˌiːkəˈlɑːdʒɪkl]", keys: ["生态","生态学"], ref: "a. 生态(学)的" },
+  { w: "label", p: "[ˈleɪbl]", keys: ["标记","标签","称号"], ref: "vt. 标记 n. 标签；称号" },
+  { w: "displace", p: "[dɪsˈpleɪs]", keys: ["取代","撤职","离开家园"], ref: "vt. 取代；撤职；迫使…离开家园" },
+  { w: "appropriate", p: "[əˈproupriət]", keys: ["适当","拨款","占用","挪用"], ref: "vt. 拨款；占用，挪用 a. 适当的" },
+  { w: "scientific", p: "[ˌsaɪənˈtɪfɪk]", keys: ["科学","细致","严谨"], ref: "a. 科学(上)的；细致严谨的" },
+  { w: "wear", p: "[wer]", keys: ["穿","戴","磨损","衣着","服装","损坏"], ref: "v. 穿，戴；留(须、发等)；面露，面带；磨损，用旧 n. 穿戴，衣着；服装，穿戴物；磨损，损坏" }
+];
+
+const state = { order: [], idx: 0, correct: 0, wrong: 0, answered: false, wrongList: [] };
+const $ = (id) => document.getElementById(id);
+
+const TTS = {
+  voices: [], ready: false,
+  load() {
+    if (!("speechSynthesis" in window)) return;
+    const update = () => { this.voices = window.speechSynthesis.getVoices(); this.ready = this.voices.length > 0; };
+    update();
+    window.speechSynthesis.onvoiceschanged = update;
+  },
+  pickVoice(lang) {
+    if (!this.voices.length) this.voices = window.speechSynthesis.getVoices();
+    const exact = this.voices.find(v => v.lang === lang);
+    if (exact) return exact;
+    const prefix = lang.split("-")[0];
+    return this.voices.find(v => v.lang.startsWith(prefix)) || null;
+  },
+  speak(text) {
+    if (!("speechSynthesis" in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      const lang = ($("accentSelect") && $("accentSelect").value) || "en-US";
+      const rate = parseFloat(($("rateSelect") && $("rateSelect").value) || "0.9");
+      utter.lang = lang;
+      utter.rate = rate;
+      utter.pitch = 1;
+      const voice = this.pickVoice(lang);
+      if (voice) utter.voice = voice;
+      const btn = $("speakBtn");
+      utter.onstart = () => btn && btn.classList.add("speaking");
+      utter.onend = () => btn && btn.classList.remove("speaking");
+      utter.onerror = () => btn && btn.classList.remove("speaking");
+      window.speechSynthesis.speak(utter);
+    } catch (e) { console.warn("TTS error:", e); }
+  }
+};
+TTS.load();
+
+function speakCurrent() {
+  if (state.idx >= state.order.length) return;
+  TTS.speak(WORDS[state.order[state.idx]].w);
+}
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function normalize(s) {
+  return (s || "").trim().toLowerCase().replace(/[\s,，。；;、./\\()（）\[\]【】"'`~!@#$%^&*+=?？!！]/g, "");
+}
+
+function isMatch(userInput, keys) {
+  const u = normalize(userInput);
+  if (!u) return false;
+  for (const k of keys) {
+    const nk = normalize(k);
+    if (!nk) continue;
+    if (u.includes(nk) || nk.includes(u)) return true;
+  }
+  return false;
+}
+
+function render() {
+  if (state.idx >= state.order.length) return showSummary();
+  const item = WORDS[state.order[state.idx]];
+  $("wordText").textContent = item.w;
+  $("phonetic").textContent = item.p || "";
+  $("answerInput").value = "";
+  $("answerInput").disabled = false;
+  $("answerInput").focus();
+  $("feedback").style.display = "none";
+  $("reference").style.display = "none";
+  $("nextBtn").style.display = "none";
+  $("checkBtn").style.display = "";
+  $("skipBtn").style.display = "";
+  $("progress").textContent = `${state.idx + 1} / ${state.order.length}`;
+  $("correctCount").textContent = state.correct;
+  $("wrongCount").textContent = state.wrong;
+  $("progressFill").style.width = `${(state.idx / state.order.length) * 100}%`;
+  state.answered = false;
+  if ($("autoSpeak") && $("autoSpeak").checked) setTimeout(speakCurrent, 120);
+}
+
+function check() {
+  if (state.answered) return next();
+  const item = WORDS[state.order[state.idx]];
+  const input = $("answerInput").value;
+  if (input.trim() === "") return skip();
+  const ok = isMatch(input, item.keys);
+  state.answered = true;
+  $("answerInput").disabled = true;
+  if (ok) {
+    state.correct++;
+    $("feedback").className = "feedback correct";
+    $("feedbackStatus").textContent = "✓ 回答正确";
+    $("feedbackText").innerHTML = `你的回答：<b>${escapeHtml(input)}</b>`;
+  } else {
+    state.wrong++;
+    state.wrongList.push({ ...item, userAnswer: input });
+    $("feedback").className = "feedback wrong";
+    $("feedbackStatus").textContent = "✗ 回答错误";
+    $("feedbackText").innerHTML = `你的回答：<b>${escapeHtml(input)}</b>`;
+  }
+  $("feedback").style.display = "block";
+  $("reference").style.display = "block";
+  $("referenceText").textContent = item.ref;
+  $("checkBtn").style.display = "none";
+  $("skipBtn").style.display = "none";
+  $("nextBtn").style.display = "";
+  $("correctCount").textContent = state.correct;
+  $("wrongCount").textContent = state.wrong;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function skip() {
+  if (state.answered) return next();
+  const item = WORDS[state.order[state.idx]];
+  state.wrong++;
+  state.wrongList.push({ ...item, userAnswer: "(跳过)" });
+  state.answered = true;
+  $("answerInput").disabled = true;
+  $("feedback").className = "feedback skipped";
+  $("feedbackStatus").textContent = "⊝ 已跳过";
+  $("feedbackText").textContent = "请看下方参考答案。";
+  $("feedback").style.display = "block";
+  $("reference").style.display = "block";
+  $("referenceText").textContent = item.ref;
+  $("checkBtn").style.display = "none";
+  $("skipBtn").style.display = "none";
+  $("nextBtn").style.display = "";
+  $("wrongCount").textContent = state.wrong;
+}
+
+function next() { state.idx++; render(); }
+
+const LIST_NUMBER = 13;
+
+function saveProgress(score) {
+  try {
+    const all = JSON.parse(localStorage.getItem("toefl-progress") || "{}");
+    const prev = all[LIST_NUMBER] || {};
+    const best = Math.max(prev.score || 0, score);
+    all[LIST_NUMBER] = { score: best, lastScore: score, lastAt: Date.now(), attempts: (prev.attempts || 0) + 1 };
+    localStorage.setItem("toefl-progress", JSON.stringify(all));
+  } catch (e) { console.warn("save progress failed:", e); }
+}
+
+function showSummary() {
+  $("quizCard").style.display = "none";
+  $("summary").style.display = "block";
+  const total = state.order.length;
+  const pct = total === 0 ? 0 : Math.round((state.correct / total) * 100);
+  $("finalScore").textContent = pct + "%";
+  $("finalScore").style.color = pct >= 80 ? "#16a34a" : pct >= 60 ? "#f59e0b" : "#dc2626";
+  $("finalBreakdown").textContent = `共 ${total} 题 · 正确 ${state.correct} · 错误/跳过 ${state.wrong}`;
+  $("progressFill").style.width = "100%";
+  saveProgress(pct);
+  const wl = $("wrongListContainer");
+  if (state.wrongList.length === 0) {
+    wl.innerHTML = "<div style='color:#16a34a; padding:12px;'>全部答对，太棒了！</div>";
+  } else {
+    wl.innerHTML = "<div style='font-weight:700; color:#dc2626; margin-bottom:8px;'>需要复习的单词：</div>" +
+      state.wrongList.map(it => `
+        <div class="wrong-item">
+          <span class="w">${it.w}</span>
+          <span class="m">${it.ref}</span>
+          <div style="color:#94a3b8; font-size:12px; margin-top:2px;">你的回答：${it.userAnswer}</div>
+        </div>
+      `).join("");
+  }
+}
+
+function start() {
+  state.order = shuffle(WORDS.map((_, i) => i));
+  state.idx = 0;
+  state.correct = 0;
+  state.wrong = 0;
+  state.wrongList = [];
+  $("summary").style.display = "none";
+  $("quizCard").style.display = "block";
+  render();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  $("checkBtn").addEventListener("click", check);
+  $("skipBtn").addEventListener("click", skip);
+  $("nextBtn").addEventListener("click", next);
+  $("restartBtn").addEventListener("click", start);
+  $("restartBtn2").addEventListener("click", start);
+  $("speakBtn").addEventListener("click", speakCurrent);
+
+  let lastEnterAt = 0;
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const now = Date.now();
+      if (now - lastEnterAt < 250) return;
+      lastEnterAt = now;
+      e.preventDefault();
+      if (state.answered) { next(); } else { check(); }
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      if (!state.answered) skip();
+    } else if ((e.key === "s" || e.key === "S") && document.activeElement !== $("answerInput")) {
+      e.preventDefault();
+      speakCurrent();
+    }
+  });
+
+  start();
+});
+</script>
+</body>
+</html>

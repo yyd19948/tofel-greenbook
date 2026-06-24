@@ -283,6 +283,7 @@
 <body>
 <div class="container">
   <header>
+    <a href="index.html" style="display:inline-block; color:#64748b; text-decoration:none; font-size:13px; margin-bottom:10px;">← 返回首页</a>
     <h1>托福绿宝书 · List 18</h1>
     <div class="subtitle">英译中测试 · 输入中文意思后按回车判定</div>
   </header>
@@ -354,7 +355,10 @@
     <div class="score" id="finalScore">0%</div>
     <div class="breakdown" id="finalBreakdown"></div>
     <div class="wrong-list" id="wrongListContainer"></div>
-    <button class="btn-primary" id="restartBtn2">再来一轮</button>
+    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <button class="btn-primary" id="restartBtn2">再来一轮</button>
+      <a href="index.html" class="btn-secondary" style="text-decoration:none; padding:12px 20px; border-radius:10px; font-weight:600; font-size:15px; display:inline-flex; align-items:center;">返回首页</a>
+    </div>
   </div>
 </div>
 
@@ -638,6 +642,23 @@ function next() {
   render();
 }
 
+const LIST_NUMBER = 18;
+
+function saveProgress(score) {
+  try {
+    const all = JSON.parse(localStorage.getItem("toefl-progress") || "{}");
+    const prev = all[LIST_NUMBER] || {};
+    const best = Math.max(prev.score || 0, score);
+    all[LIST_NUMBER] = {
+      score: best,
+      lastScore: score,
+      lastAt: Date.now(),
+      attempts: (prev.attempts || 0) + 1
+    };
+    localStorage.setItem("toefl-progress", JSON.stringify(all));
+  } catch (e) { console.warn("save progress failed:", e); }
+}
+
 function showSummary() {
   $("quizCard").style.display = "none";
   $("summary").style.display = "block";
@@ -647,6 +668,7 @@ function showSummary() {
   $("finalScore").style.color = pct >= 80 ? "#16a34a" : pct >= 60 ? "#f59e0b" : "#dc2626";
   $("finalBreakdown").textContent = `共 ${total} 题 · 正确 ${state.correct} · 错误/跳过 ${state.wrong}`;
   $("progressFill").style.width = "100%";
+  saveProgress(pct);
 
   const wl = $("wrongListContainer");
   if (state.wrongList.length === 0) {
